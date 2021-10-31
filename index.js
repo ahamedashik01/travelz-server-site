@@ -21,9 +21,30 @@ async function run() {
     try {
         await client.connect();
         console.log('client connected');
+
+        const database = client.db('travelz');
+        const packagesCollection = database.collection('packages');
+
+
+        //GET API
+        app.get('/packages', async (req, res) => {
+            const cursor = packagesCollection.find({});
+            const packages = await cursor.toArray();
+            res.send(packages);
+        })
+
+        //POST API
+        app.post('/packages', async (req, res) => {
+            const package = req.body;
+            console.log('hit the post api', package)
+            const result = await packagesCollection.insertOne(package);
+            console.log(result);
+            res.json(result);
+
+        })
     }
     finally {
-
+        // await client.close();
     }
 }
 
