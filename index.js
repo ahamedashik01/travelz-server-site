@@ -56,6 +56,12 @@ async function run() {
             res.json(result);
         });
 
+        app.get('/booking', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const bookings = await cursor.toArray();
+            res.json(bookings);
+        })
+
     }
     finally {
         // await client.close();
