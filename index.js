@@ -52,7 +52,7 @@ async function run() {
         //ORDER API
         app.post('/booking', async (req, res) => {
             const order = req.body;
-            const result = await packagesCollection.insertOne(order);
+            const result = await orderCollection.insertOne(order);
             res.json(result);
         });
 
