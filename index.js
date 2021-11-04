@@ -44,9 +44,7 @@ async function run() {
         //POST API
         app.post('/packages', async (req, res) => {
             const package = req.body;
-            console.log('hit the post api', package)
             const result = await packagesCollection.insertOne(package);
-            console.log(result);
             res.json(result);
 
         });
@@ -54,13 +52,10 @@ async function run() {
         //ORDER API
         app.post('/booking', async (req, res) => {
             const order = req.body;
-            console.log('order', order);
-            res.send('oder keeped')
+            const result = await packagesCollection.insertOne(order);
+            res.json(result);
         });
 
-        app.get('/booking/:id', async (req, res) => {
-
-        })
     }
     finally {
         // await client.close();
