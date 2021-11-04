@@ -2,6 +2,7 @@ const { MongoClient } = require('mongodb');
 const express = require('express');
 var cors = require('cors');
 require('dotenv').config();
+const ObjcetId = require('mongodb').ObjectId;
 
 const app = express();
 
@@ -24,6 +25,7 @@ async function run() {
 
         const database = client.db('travelz');
         const packagesCollection = database.collection('packages');
+        const orderCollection = database.collection('orders')
 
 
         //GET API
@@ -31,6 +33,12 @@ async function run() {
             const cursor = packagesCollection.find({});
             const packages = await cursor.toArray();
             res.send(packages);
+        });
+        app.get('/packages/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjcetId(id) };
+            const package = await packagesCollection.findOne(query);
+            res.json(package);
         })
 
         //POST API
@@ -40,6 +48,17 @@ async function run() {
             const result = await packagesCollection.insertOne(package);
             console.log(result);
             res.json(result);
+
+        });
+
+        //ORDER API
+        app.post('/booking', async (req, res) => {
+            const order = req.body;
+            console.log('order', order);
+            res.send('oder keeped')
+        });
+
+        app.get('/booking/:id', async (req, res) => {
 
         })
     }
