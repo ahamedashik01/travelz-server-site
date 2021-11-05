@@ -50,17 +50,29 @@ async function run() {
         });
 
         //ORDER API
+
+        //POST
         app.post('/booking', async (req, res) => {
             const order = req.body;
             const result = await orderCollection.insertOne(order);
             res.json(result);
         });
 
+        //GET
         app.get('/booking', async (req, res) => {
             const cursor = orderCollection.find({});
             const bookings = await cursor.toArray();
             res.json(bookings);
+        });
+
+        //DELETE
+        app.delete('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjcetId(id) }
+            const result = await orderCollection.deleteOne(query);
+            res.json(result);
         })
+
 
     }
     finally {
