@@ -73,6 +73,13 @@ async function run() {
             res.json(result);
         })
 
+        //UPDATE
+        app.put('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('updateubg', id)
+            res.send('updating')
+        })
+
 
     }
     finally {
