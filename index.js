@@ -2,10 +2,9 @@ const { MongoClient } = require('mongodb');
 const express = require('express');
 var cors = require('cors');
 require('dotenv').config();
+
 const ObjcetId = require('mongodb').ObjectId;
-
 const app = express();
-
 const port = process.env.PORT || 5000;
 
 // middleware
@@ -14,7 +13,7 @@ app.use(express.json());
 
 // uri 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.5cdlp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-console.log(uri)
+
 // client 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -24,11 +23,15 @@ async function run() {
         console.log('client connected');
 
         const database = client.db('travelz');
+        //PACKAGE DATA 
         const packagesCollection = database.collection('packages');
+        //ORDER DATA 
         const orderCollection = database.collection('orders')
 
 
-        //GET API
+        //PACKAGE DATA 
+
+        //GET 
         app.get('/packages', async (req, res) => {
             const cursor = packagesCollection.find({});
             const packages = await cursor.toArray();
@@ -41,13 +44,22 @@ async function run() {
             res.json(package);
         })
 
-        //POST API
+        //POST 
         app.post('/packages', async (req, res) => {
             const package = req.body;
             const result = await packagesCollection.insertOne(package);
             res.json(result);
 
         });
+
+        //DELETE 
+        app.delete('/packages/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjcetId(id) }
+            const result = await packagesCollection.deleteOne(query);
+            res.json(result);
+        })
+
 
         //ORDER API
 
